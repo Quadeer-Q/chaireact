@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback,useEffect } from 'react'
 
 function App() {
 
@@ -21,7 +21,10 @@ function App() {
 
   }, [length, numberallowed, charallowed, setPassword])
 
-
+  useEffect(()=>{
+    passwordGenerator()
+  },[length, numberallowed, charallowed, passwordGenerator  ])
+  
   return (
     <>
       <div className= 'w-full max-w-md mx-auto shadow-md rounded-lg  px-4 my-8 text-orange-500 bg-gray-700 py-4'> <h1 className='text-white text-center'>Password Generator </h1> 
@@ -46,7 +49,8 @@ function App() {
          </div>
         </div>
         <div className='flex items-center gap-x-2'>
-          <input type='checkbox'
+          <input
+          type='checkbox'
           checked={numberallowed}
            onChange= {()=> {setNumberAllowed((prev)=>!prev)}}
           />
@@ -58,7 +62,15 @@ function App() {
           onChange= {()=> {setCharAllowed((prev)=>!prev)}}
           />
           <label>Include Special Characters</label>
-          </div>  
+          </div>
+          <div className="mt-4">
+  <button
+    onClick={passwordGenerator}
+    className="px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600"
+  >
+    Generate Password
+  </button>
+</div>  
       </div>
     </>
   )
