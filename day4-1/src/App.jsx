@@ -1,4 +1,4 @@
-import { useState, useCallback,useEffect } from 'react'
+import { useState, useCallback,useEffect, useRef } from 'react'
 
 function App() {
 
@@ -6,6 +6,7 @@ function App() {
   const [numberallowed, setNumberAllowed] =useState(false)
   const [charallowed, setCharAllowed]= useState(false)
   const [password, setPassword ]= useState("")
+  const inputRef= useRef(null)
 
   const passwordGenerator= useCallback( () => {
     let pass=""
@@ -20,6 +21,12 @@ function App() {
     setPassword(pass)
 
   }, [length, numberallowed, charallowed, setPassword])
+  
+  const copyToClipboard= useCallback(() => {
+      inputRef.current.select();
+      inputRef.current.setSelectionRange(0,100)
+      window.navigator.clipboard.writeText(password)
+  },[password])
 
   useEffect(()=>{
     passwordGenerator()
@@ -33,8 +40,12 @@ function App() {
         value={password}
         className= 'outline-none w-full px-4 py-2 text-white-900 '
         placeholder='Generated Password'
+        readOnly
+        ref={inputRef}   /*linking the DOM element to the ref variable. so that we can use it later as inputRef.current as in the callback above  */ 
         />
-
+        <button className= " outline-none bg-blue-700 text-white px-4 py-2" onClick={copyToClipboard}>
+        copy
+        </button>
         </div>
         <div className='flex text-sm gap-x-2'>
           <div className=' flex items-center gap-x-2'>
